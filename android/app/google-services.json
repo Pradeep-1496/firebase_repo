@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "3449345393",
+    "project_id": "foods-24",
+    "storage_bucket": "foods-24.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:3449345393:android:088971265be5ba5f1a92d0",
+        "android_client_info": {
+          "package_name": "com.example.foods24_firebase"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "3449345393-qc0q6gq9gva8cedf6r3tm08761r25iee.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDhXZ91fx7QES7otgFG0AXmGGezHLmjVFU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "3449345393-qc0q6gq9gva8cedf6r3tm08761r25iee.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "3449345393-t3c4ikdddl0a90q98ful2chbobebdsfs.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.foods24"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
