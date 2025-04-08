@@ -13,6 +13,8 @@ class _LoginState extends State<Login> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  bool _isPasswordVisible = false;
+
   bool _isLoading = false;
 
   Future<void> _login() async {
@@ -43,6 +45,7 @@ class _LoginState extends State<Login> {
 
   @override
   Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
     return Scaffold(
       body: Center(
         child: Padding(
@@ -83,9 +86,16 @@ class _LoginState extends State<Login> {
                 SizedBox(height: 40),
                 Align(
                   alignment: Alignment.centerLeft,
-                  child: Text("Email address",
-                      style:
-                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                  child: Text(
+                    "Email",
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: theme.brightness == Brightness.dark
+                          ? Colors.white
+                          : Colors.black,
+                    ),
+                  ),
                 ),
                 SizedBox(height: 5),
                 TextField(
@@ -108,15 +118,38 @@ class _LoginState extends State<Login> {
                 SizedBox(height: 20),
                 Align(
                   alignment: Alignment.centerLeft,
-                  child: Text("Password",
-                      style:
-                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                  child: Text(
+                    "Password",
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: theme.brightness == Brightness.dark
+                          ? Colors.white
+                          : Colors.black,
+                    ),
+                  ),
                 ),
                 SizedBox(height: 5),
                 TextField(
                   controller: _passwordController,
-                  obscureText: true,
+                  // obscureText: true,
+                  obscureText: !_isPasswordVisible,
                   decoration: InputDecoration(
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        _isPasswordVisible
+                            ? Icons.visibility
+                            : Icons.visibility_off,
+                        color: theme.brightness == Brightness.dark
+                            ? Colors.white70
+                            : Colors.grey,
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          _isPasswordVisible = !_isPasswordVisible;
+                        });
+                      },
+                    ),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(15),
                     ),

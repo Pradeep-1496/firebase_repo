@@ -2,11 +2,94 @@ import 'package:flutter/material.dart';
 import 'Login.dart';
 import 'SignUp.dart';
 
+void main() {
+  runApp(First());
+}
+
 class First extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        brightness: Brightness.light,
+        primaryColor: Colors.orange,
+        scaffoldBackgroundColor: Colors.white,
+        appBarTheme: AppBarTheme(
+          backgroundColor: Colors.orange,
+          elevation: 0,
+        ),
+        textTheme: TextTheme(
+          bodyLarge: TextStyle(
+              color: Colors.black), // Replaced bodyText1 with bodyLarge
+          bodyMedium: TextStyle(
+              color: Colors.black54), // Replaced bodyText2 with bodyMedium
+          titleLarge: TextStyle(
+            // Replaced headline6 with titleLarge
+            fontSize: 28,
+            fontWeight: FontWeight.bold,
+            color: Colors.black,
+          ),
+        ),
+        buttonTheme: ButtonThemeData(
+          buttonColor: Colors.orange,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+        ),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors
+                .orange, // Corrected: use backgroundColor instead of primary
+            foregroundColor: Colors
+                .white, // Corrected: use foregroundColor instead of onPrimary
+            minimumSize: Size(250, 56),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+          ),
+        ),
+      ),
+      darkTheme: ThemeData(
+        brightness: Brightness.dark,
+        primaryColor: Colors.deepOrange,
+        scaffoldBackgroundColor: const Color.fromARGB(255, 34, 12, 41),
+        appBarTheme: AppBarTheme(
+          backgroundColor: Colors.deepOrange,
+          elevation: 0,
+        ),
+        textTheme: TextTheme(
+          bodyLarge: TextStyle(
+              color: Colors.white), // Replaced bodyText1 with bodyLarge
+          bodyMedium: TextStyle(
+              color: Colors.white70), // Replaced bodyText2 with bodyMedium
+          titleLarge: TextStyle(
+            // Replaced headline6 with titleLarge
+            fontSize: 28,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+          ),
+        ),
+        buttonTheme: ButtonThemeData(
+          buttonColor: Colors.deepOrange,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+        ),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors
+                .deepOrange, // Corrected: use backgroundColor instead of primary
+            foregroundColor: Colors
+                .white, // Corrected: use foregroundColor instead of onPrimary
+            minimumSize: Size(250, 56),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+          ),
+        ),
+      ),
+      themeMode: ThemeMode.system, // Automatically follow system theme
       home: WelcomeScreen(),
     );
   }
@@ -16,13 +99,8 @@ class WelcomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(
-      //   elevation: 0,
-      //   backgroundColor: const Color.fromARGB(255, 255, 255, 255),
-      // ),
       body: SingleChildScrollView(
         child: Container(
-          color: Colors.white,
           padding:
               EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
           child: Column(
@@ -40,20 +118,17 @@ class WelcomeScreen extends StatelessWidget {
                     const SizedBox(height: 20),
                     Text(
                       'Welcome',
-                      style: TextStyle(
-                        fontSize: 28,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
-                      ),
+                      style: Theme.of(context)
+                          .textTheme
+                          .titleLarge, // Using dynamic theme
                     ),
                     const SizedBox(height: 10),
                     Text(
                       'Before Enjoying Foodmedia Services\nPlease Register First',
                       textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.black54,
-                      ),
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodyMedium, // Using dynamic theme
                     ),
                   ],
                 ),
@@ -70,13 +145,6 @@ class WelcomeScreen extends StatelessWidget {
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.transparent,
-                    shadowColor: Colors.transparent,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                  ),
                   onPressed: () {
                     Navigator.push(
                       context,
@@ -85,26 +153,26 @@ class WelcomeScreen extends StatelessWidget {
                       ),
                     );
                   },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.orange, // Background color
+                    foregroundColor: Colors.white, // Text color
+                    minimumSize: Size(250, 56),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
                   child: Text(
                     'Create Account',
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
-                      color: Colors.white,
+                      color: Colors.white, // Text color
                     ),
                   ),
                 ),
               ),
               const SizedBox(height: 20),
               ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.orange.shade100,
-                  padding: EdgeInsets.symmetric(vertical: 16),
-                  minimumSize: Size(250, 56),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
                 onPressed: () {
                   Navigator.push(
                     context,
@@ -113,12 +181,20 @@ class WelcomeScreen extends StatelessWidget {
                     ),
                   );
                 },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.orange.shade100,
+                  foregroundColor: Colors.deepOrange,
+                  padding: EdgeInsets.symmetric(vertical: 16),
+                  minimumSize: Size(250, 56),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
                 child: Text(
                   'Login',
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
-                    color: Colors.deepOrange,
                   ),
                 ),
               ),
@@ -129,30 +205,28 @@ class WelcomeScreen extends StatelessWidget {
                     TextSpan(
                       text:
                           'By Logging In Or Registering, You Have Agreed To The ',
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: Colors.black54,
-                      ),
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodyMedium, // Using dynamic theme
                     ),
                     TextSpan(
                       text: 'Terms And Conditions ',
                       style: TextStyle(
                         fontSize: 12,
-                        color: Colors.orange,
+                        color: Theme.of(context).primaryColor,
                       ),
                     ),
                     TextSpan(
                       text: 'And ',
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: Colors.black54,
-                      ),
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodyMedium, // Using dynamic theme
                     ),
                     TextSpan(
                       text: 'Privacy Policy.',
                       style: TextStyle(
                         fontSize: 12,
-                        color: Colors.orange,
+                        color: Theme.of(context).primaryColor,
                       ),
                     ),
                   ],

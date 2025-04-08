@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:foods24_firebase/Pages/NewArrival.dart';
-import './BookingRestaurant.dart'; // Import Booking Restaurant Page
 import './Booking.dart'; // Import Booking Page
 
 class HomeScreen extends StatelessWidget {

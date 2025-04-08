@@ -1,10 +1,9 @@
-// ignore_for_file: unused_import
-
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:foods24_firebase/services/auth_service.dart';
 import 'Login.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'PermissionScreen.dart'; // Import the PermissionScreen page
 
 class RegistrationScreen extends StatefulWidget {
   @override
@@ -12,16 +11,30 @@ class RegistrationScreen extends StatefulWidget {
 }
 
 class _RegistrationScreenState extends State<RegistrationScreen> {
-  final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _confirmPasswordController =
+      TextEditingController(); // Confirm password controller
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   bool _isLoading = false;
+  bool _isPasswordVisible = false; // Flag to toggle password visibility
+  bool _isConfirmPasswordVisible =
+      false; // Flag to toggle confirm password visibility
 
   // Email & Password Signup
   Future<void> _registerWithEmail() async {
     setState(() => _isLoading = true);
+
+    // Validate if passwords match
+    if (_passwordController.text != _confirmPasswordController.text) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Passwords do not match!")),
+      );
+      setState(() => _isLoading = false);
+      return;
+    }
+
     try {
       UserCredential userCredential =
           await _auth.createUserWithEmailAndPassword(
@@ -30,7 +43,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
       );
 
       User? user = userCredential.user;
-      await user?.updateDisplayName(_nameController.text);
+
       await user?.reload();
       user = _auth.currentUser; // Refresh user data
 
@@ -38,7 +51,11 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         SnackBar(content: Text("Signup Successful: ${user?.email}")),
       );
 
-      // Navigate to home screen or login screen
+      // Navigate to PermissionScreen after successful signup
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => PermissionScreen()),
+      );
     } on FirebaseAuthException catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text("Error: ${e.message}")),
@@ -69,7 +86,11 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         SnackBar(content: Text("Google Sign-In Successful: ${user?.email}")),
       );
 
-      // Navigate to home screen
+      // Navigate to PermissionScreen after successful signup
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => PermissionScreen()),
+      );
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text("Google Sign-In Error: $e")),
@@ -79,6 +100,9 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // Fetch the current theme mode
+    final ThemeData theme = Theme.of(context);
+
     return Scaffold(
       body: Center(
         child: Padding(
@@ -109,16 +133,19 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                       onTap: () {
                         // Handle Login text tap here
                         Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => Login(),
-                            ));
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => Login(),
+                          ),
+                        );
                       },
                       child: Text(
                         'Login',
                         style: TextStyle(
                           fontSize: 16,
-                          color: Colors.orange[200],
+                          color: theme.brightness == Brightness.dark
+                              ? Colors.orange[100]
+                              : Colors.orange[200],
                         ),
                       ),
                     ),
@@ -127,74 +154,50 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
 
                 const SizedBox(height: 40),
 
-                // Align text to the left for "Full Name"
+                // Email Field
                 Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
-                    "Full Name",
+                    "Email address",
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
-                      color: Colors.black,
+                      color: theme.brightness == Brightness.dark
+                          ? Colors.white
+                          : Colors.black,
                     ),
                   ),
                 ),
-
                 const SizedBox(height: 5),
                 Container(
-                  height: 50,
-                  child: TextField(
-                    controller: _nameController,
-                    decoration: InputDecoration(
-                      labelStyle: TextStyle(color: Colors.grey),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: BorderSide(color: Colors.grey, width: 1),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide:
-                            BorderSide(color: Colors.orange, width: 1.5),
-                      ),
-                    ),
-                  ),
-                ),
-
-                const SizedBox(height: 20),
-
-                // Align text to the left for "Email address"
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    "Email addess",
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
-                    ),
-                  ),
-                ),
-
-                const SizedBox(height: 5),
-                Container(
-                  height: 50,
                   child: TextField(
                     controller: _emailController,
                     decoration: InputDecoration(
-                      labelStyle: TextStyle(color: Colors.grey),
+                      labelStyle: TextStyle(
+                        color: theme.brightness == Brightness.dark
+                            ? Colors.white70
+                            : Colors.grey,
+                      ),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(15),
                       ),
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(15),
-                        borderSide: BorderSide(color: Colors.grey, width: 1),
+                        borderSide: BorderSide(
+                          color: theme.brightness == Brightness.dark
+                              ? Colors.white30
+                              : Colors.grey,
+                          width: 1,
+                        ),
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(15),
-                        borderSide: BorderSide(color: Colors.orange, width: 2),
+                        borderSide: BorderSide(
+                          color: theme.brightness == Brightness.dark
+                              ? Colors.orangeAccent
+                              : Colors.orange,
+                          width: 2,
+                        ),
                       ),
                     ),
                   ),
@@ -202,7 +205,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
 
                 const SizedBox(height: 20),
 
-                // Align text to the left for "Password"
+                // Password Field
                 Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
@@ -210,28 +213,116 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
-                      color: Colors.black,
+                      color: theme.brightness == Brightness.dark
+                          ? Colors.white
+                          : Colors.black,
                     ),
                   ),
                 ),
-
                 const SizedBox(height: 5),
                 Container(
-                  height: 50,
                   child: TextField(
                     controller: _passwordController,
-                    obscureText: true,
+                    obscureText: !_isPasswordVisible,
                     decoration: InputDecoration(
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          _isPasswordVisible
+                              ? Icons.visibility
+                              : Icons.visibility_off,
+                          color: theme.brightness == Brightness.dark
+                              ? Colors.white70
+                              : Colors.grey,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            _isPasswordVisible = !_isPasswordVisible;
+                          });
+                        },
+                      ),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(15),
                       ),
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(15),
-                        borderSide: BorderSide(color: Colors.grey, width: 1),
+                        borderSide: BorderSide(
+                          color: theme.brightness == Brightness.dark
+                              ? Colors.white30
+                              : Colors.grey,
+                          width: 1,
+                        ),
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(15),
-                        borderSide: BorderSide(color: Colors.orange, width: 2),
+                        borderSide: BorderSide(
+                          color: theme.brightness == Brightness.dark
+                              ? Colors.orangeAccent
+                              : Colors.orange,
+                          width: 2,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+
+                const SizedBox(height: 20),
+
+                // Confirm Password Field
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    "Confirm Password",
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: theme.brightness == Brightness.dark
+                          ? Colors.white
+                          : Colors.black,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 5),
+                Container(
+                  child: TextField(
+                    controller: _confirmPasswordController,
+                    obscureText: !_isConfirmPasswordVisible,
+                    decoration: InputDecoration(
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          _isConfirmPasswordVisible
+                              ? Icons.visibility
+                              : Icons.visibility_off,
+                          color: theme.brightness == Brightness.dark
+                              ? Colors.white70
+                              : Colors.grey,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            _isConfirmPasswordVisible =
+                                !_isConfirmPasswordVisible;
+                          });
+                        },
+                      ),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(15),
+                        borderSide: BorderSide(
+                          color: theme.brightness == Brightness.dark
+                              ? Colors.white30
+                              : Colors.grey,
+                          width: 1,
+                        ),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(15),
+                        borderSide: BorderSide(
+                          color: theme.brightness == Brightness.dark
+                              ? Colors.orangeAccent
+                              : Colors.orange,
+                          width: 2,
+                        ),
                       ),
                     ),
                   ),
@@ -241,7 +332,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
 
                 // Registration Button
                 Container(
-                  width: 250, // Set the width as per your requirement
+                  width: 250,
                   height: 56,
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
@@ -259,20 +350,23 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                         borderRadius: BorderRadius.circular(10),
                       ),
                     ),
-                    onPressed: _registerWithEmail,
-                    child: Text(
-                      'Registration',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
-                    ),
+                    onPressed: _isLoading ? null : _registerWithEmail,
+                    child: _isLoading
+                        ? CircularProgressIndicator(color: Colors.white)
+                        : Text(
+                            'Registration',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
+                          ),
                   ),
                 ),
 
                 SizedBox(height: 20),
 
+                // Google Sign Up Button
                 Container(
                   width: 350,
                   height: 60,
@@ -296,7 +390,9 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                             style: TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
-                              color: const Color.fromARGB(255, 0, 0, 0),
+                              color: theme.brightness == Brightness.dark
+                                  ? Colors.black
+                                  : Colors.black,
                             ),
                           ),
                         ],
