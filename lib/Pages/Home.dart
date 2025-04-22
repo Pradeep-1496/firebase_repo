@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:foods24_firebase/Pages/NewArrival.dart';
-import './Booking.dart'; // Import Booking Page
+import './Booking.dart';
 
 class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    final textTheme = theme.textTheme;
+
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: theme.scaffoldBackgroundColor,
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: theme.scaffoldBackgroundColor,
         elevation: 0,
         title: Row(
           children: [
@@ -17,15 +21,15 @@ class HomeScreen extends StatelessWidget {
             SizedBox(width: 5),
             Text(
               "Home",
-              style:
-                  TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+              style: textTheme.bodyLarge!
+                  .copyWith(fontWeight: FontWeight.bold, fontSize: 20),
             ),
-            Icon(Icons.keyboard_arrow_down, color: Colors.black),
+            Icon(Icons.keyboard_arrow_down, color: Colors.orange),
           ],
         ),
         actions: [
           IconButton(
-            icon: Icon(Icons.settings, color: Colors.black),
+            icon: Icon(Icons.settings, color: Colors.orange),
             onPressed: () {},
           ),
         ],
@@ -40,17 +44,28 @@ class HomeScreen extends StatelessWidget {
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 10),
                 decoration: BoxDecoration(
-                  color: Colors.grey[200],
+                  color: theme.brightness == Brightness.dark
+                      ? Colors.grey[800]
+                      : Colors.grey[200],
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: Row(
                   children: [
-                    Icon(Icons.search, color: Colors.grey),
+                    Icon(Icons.search,
+                        color: theme.brightness == Brightness.dark
+                            ? Colors.grey[400]
+                            : Colors.grey),
                     SizedBox(width: 10),
                     Expanded(
                       child: TextField(
+                        style: textTheme.bodyMedium,
                         decoration: InputDecoration(
                           hintText: "Restaurant name",
+                          hintStyle: textTheme.bodyMedium!.copyWith(
+                            color: theme.brightness == Brightness.dark
+                                ? Colors.grey[400]
+                                : Colors.grey,
+                          ),
                           border: InputBorder.none,
                         ),
                       ),
@@ -70,160 +85,93 @@ class HomeScreen extends StatelessWidget {
                   viewportFraction: 0.85,
                 ),
                 items: [
-                  restaurantCard("Pavilion Restaurant", "50% off",
+                  restaurantCard(context, "Pavilion Restaurant", "50% off",
                       "assets/img/pavilion.jpg"),
-                  restaurantCard("Level 5", "30% off", "assets/img/level5.jpg"),
                   restaurantCard(
-                      "Kshitij", "20% off", "assets/img/kshitij.png"),
+                      context, "Level 5", "30% off", "assets/img/level5.jpg"),
+                  restaurantCard(
+                      context, "Kshitij", "20% off", "assets/img/kshitij.png"),
                 ],
               ),
 
               SizedBox(height: 40),
 
-              // New Arrivals Section
               sectionTitle("Today New Arrivable", context),
               SizedBox(height: 10),
+
               SizedBox(
                 height: 150,
                 child: ListView(
                   scrollDirection: Axis.horizontal,
                   children: [
-                    restaurantTile("Ganesh Aloopuri", "ganesh aloopuri, surat",
-                        "assets/img/ganesh.jpeg"),
-                    restaurantTile("Level 5", "Level 5 cafe, surat",
+                    restaurantTile(context, "Ganesh Aloopuri",
+                        "ganesh aloopuri, surat", "assets/img/ganesh.jpeg"),
+                    restaurantTile(context, "Level 5", "Level 5 cafe, surat",
                         "assets/img/level5.jpg"),
-                    restaurantTile("Chaat Hub", "Ambika Chaat, surat",
+                    restaurantTile(context, "Chaat Hub", "Ambika Chaat, surat",
                         "assets/img/chaat.jpeg"),
                   ],
                 ),
               ),
+
               SizedBox(height: 20),
 
-              // Booking Section
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text("Booking Restaurant",
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-                  // TextButton(
-                  //   onPressed: () {
-                  //     Navigator.push(
-                  //       context,
-                  //       MaterialPageRoute(
-                  //           builder: (context) => BookingRestaurantPage()),
-                  //     );
-                  //   },
-                  //   child:
-                  //       Text("See All", style: TextStyle(color: Colors.orange)),
-                  // ),
+                      style: textTheme.bodyLarge!
+                          .copyWith(fontWeight: FontWeight.bold)),
                 ],
               ),
               SizedBox(height: 10),
 
-              bookingTile(
-                context,
-                "Kshitij Restaurant",
-                "assets/img/kshitij.png",
-                "Close: 11:00 pm",
-              ),
-              SizedBox(height: 20),
-
-              bookingTile(
-                context,
-                "Spice Villa",
-                "assets/img/spice.jpeg",
-                "Close: 11:00 pm",
-              ),
+              // Booking Tiles
+              bookingTile(context, "Kshitij Restaurant",
+                  "assets/img/kshitij.png", "11:00 pm"),
               SizedBox(height: 20),
               bookingTile(
-                context,
-                "Krishna Restaurant",
-                "assets/img/harikrishna.png",
-                "Close: 11:00 pm",
-              ),
+                  context, "Spice Villa", "assets/img/spice.jpeg", "11:00 pm"),
               SizedBox(height: 20),
-
-              bookingTile(
-                context,
-                "Level 5 Cafe",
-                "assets/img/level5.jpg",
-                "Close: 12:00 am",
-              ),
+              bookingTile(context, "Krishna Restaurant",
+                  "assets/img/harikrishna.png", "11:00 pm"),
               SizedBox(height: 20),
-
               bookingTile(
-                context,
-                "Tandoor Hunt",
-                "assets/img/tandoor.jpeg",
-                "Close: 11:45 pm",
-              ),
+                  context, "Level 5 Cafe", "assets/img/level5.jpg", "12:00 am"),
               SizedBox(height: 20),
-
-              bookingTile(
-                context,
-                "Om Restaurant",
-                "assets/img/om.jpeg",
-                "Close: 11:00 pm",
-              ),
+              bookingTile(context, "Tandoor Hunt", "assets/img/tandoor.jpeg",
+                  "11:45 pm"),
               SizedBox(height: 20),
-
               bookingTile(
-                context,
-                "Lapinozz",
-                "assets/img/lapinoz.jpeg",
-                "Close: 10:30 pm",
-              ),
+                  context, "Om Restaurant", "assets/img/om.jpeg", "11:00 pm"),
               SizedBox(height: 20),
-
               bookingTile(
-                context,
-                "Baba Sai dhosa",
-                "assets/img/level5.jpg",
-                "Close: 12:00 am",
-              ),
+                  context, "Lapinozz", "assets/img/lapinoz.jpeg", "10:30 pm"),
               SizedBox(height: 20),
-
-              bookingTile(
-                context,
-                "365 travel cafe",
-                "assets/img/365.jpeg",
-                "Close: 11:45 pm",
-              ),
+              bookingTile(context, "Baba Sai Dosa", "assets/img/level5.jpg",
+                  "12:00 am"),
               SizedBox(height: 20),
-
-              bookingTile(
-                context,
-                "Domino's",
-                "assets/img/dominos.jpeg",
-                "Close: 11:00 pm",
-              ),
+              bookingTile(context, "365 Travel Cafe", "assets/img/365.jpeg",
+                  "11:45 pm"),
               SizedBox(height: 20),
-
               bookingTile(
-                context,
-                "K's vernda",
-                "assets/img/ks.jpeg",
-                "Close: 10:30 pm",
-              ),
+                  context, "Domino's", "assets/img/dominos.jpeg", "11:00 pm"),
               SizedBox(height: 20),
-
               bookingTile(
-                context,
-                "Jungle book",
-                "assets/img/jungle.jpeg",
-                "Close: 11:45 pm",
-              ),
+                  context, "K's Veranda", "assets/img/ks.jpeg", "10:30 pm"),
+              SizedBox(height: 20),
+              bookingTile(
+                  context, "Jungle Book", "assets/img/jungle.jpeg", "11:45 pm"),
             ],
           ),
         ),
       ),
-
-      // Bottom Navigation Bar
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
-        selectedItemColor: Colors.orange,
-        items: [
+        selectedItemColor: colorScheme.primary,
+        unselectedItemColor: colorScheme.onSurface.withOpacity(0.6),
+        backgroundColor: colorScheme.surface,
+        items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: ""),
           BottomNavigationBarItem(icon: Icon(Icons.calendar_today), label: ""),
           BottomNavigationBarItem(icon: Icon(Icons.location_on), label: ""),
@@ -234,7 +182,10 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  Widget restaurantCard(String name, String discount, String imagePath) {
+  Widget restaurantCard(
+      BuildContext context, String name, String discount, String imagePath) {
+    final theme = Theme.of(context);
+
     return Stack(
       children: [
         ClipRRect(
@@ -251,9 +202,11 @@ class HomeScreen extends StatelessWidget {
               color: Colors.orange,
               borderRadius: BorderRadius.circular(5),
             ),
-            child: Text(discount,
-                style: TextStyle(
-                    color: Colors.white, fontWeight: FontWeight.bold)),
+            child: Text(
+              discount,
+              style:
+                  TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+            ),
           ),
         ),
         Positioned(
@@ -262,14 +215,21 @@ class HomeScreen extends StatelessWidget {
           child: Text(
             name,
             style: TextStyle(
-                color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
+              color: Colors.white,
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+              shadows: [Shadow(color: Colors.black, blurRadius: 4)],
+            ),
           ),
         ),
       ],
     );
   }
 
-  Widget restaurantTile(String name, String location, String imagePath) {
+  Widget restaurantTile(
+      BuildContext context, String name, String location, String imagePath) {
+    final textTheme = Theme.of(context).textTheme;
+
     return Container(
       width: 130,
       margin: EdgeInsets.only(right: 10),
@@ -282,8 +242,11 @@ class HomeScreen extends StatelessWidget {
                 width: 130, height: 80, fit: BoxFit.cover),
           ),
           SizedBox(height: 5),
-          Text(name, style: TextStyle(fontWeight: FontWeight.bold)),
-          Text(location, style: TextStyle(color: Colors.grey, fontSize: 12)),
+          Text(name,
+              style:
+                  textTheme.bodyMedium!.copyWith(fontWeight: FontWeight.bold)),
+          Text(location,
+              style: textTheme.bodySmall!.copyWith(color: Colors.grey)),
         ],
       ),
     );
@@ -291,13 +254,21 @@ class HomeScreen extends StatelessWidget {
 
   Widget bookingTile(
       BuildContext context, String name, String imagePath, String closingTime) {
+    final theme = Theme.of(context);
+    final textTheme = theme.textTheme;
+    final colorScheme = theme.colorScheme;
+    final brightness = theme.brightness;
+
     return Container(
       padding: EdgeInsets.all(10),
       decoration: BoxDecoration(
-        color: Colors.grey[200],
+        color: brightness == Brightness.dark
+            ? Colors.grey[850] // Dark mode background
+            : Colors.grey[200], // Light mode background
         borderRadius: BorderRadius.circular(10),
       ),
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           ClipRRect(
             borderRadius: BorderRadius.circular(10),
@@ -305,15 +276,21 @@ class HomeScreen extends StatelessWidget {
                 width: 80, height: 60, fit: BoxFit.cover),
           ),
           SizedBox(width: 10),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(name, style: TextStyle(fontWeight: FontWeight.bold)),
-              Text("Close: $closingTime",
-                  style: TextStyle(color: Colors.grey, fontSize: 12)),
-            ],
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(name,
+                    style: textTheme.bodyLarge!
+                        .copyWith(fontWeight: FontWeight.bold),
+                    overflow: TextOverflow.ellipsis),
+                SizedBox(height: 4),
+                Text("Close: $closingTime",
+                    style: textTheme.bodySmall!.copyWith(color: Colors.grey)),
+              ],
+            ),
           ),
-          Spacer(),
+          SizedBox(width: 8),
           ElevatedButton(
             onPressed: () {
               Navigator.push(
@@ -327,8 +304,12 @@ class HomeScreen extends StatelessWidget {
                 ),
               );
             },
-            style: ElevatedButton.styleFrom(backgroundColor: Colors.orange),
-            child: Text("Book", style: TextStyle(color: Colors.white)),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.orange,
+              minimumSize: Size(60, 35),
+              padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+            ),
+            child: Text("Book", style: TextStyle(color: colorScheme.onPrimary)),
           ),
         ],
       ),
@@ -336,21 +317,23 @@ class HomeScreen extends StatelessWidget {
   }
 
   Widget sectionTitle(String title, BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(title,
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+            style: textTheme.bodyLarge!.copyWith(fontWeight: FontWeight.bold)),
         TextButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => NewArrivalsPage(),
-                ),
-              );
-            },
-            child: Text("See All", style: TextStyle(color: Colors.orange))),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => NewArrivalsPage()),
+            );
+          },
+          child: Text("See All", style: TextStyle(color: Colors.orange)),
+        ),
       ],
     );
   }

@@ -1,56 +1,64 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:foods24_firebase/firebase_options.dart';
-
 import './Pages/Splash.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  runApp(MyApp()); // No need for 'const' here
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  MyApp({super.key}); // Remove 'const' from the constructor
+  MyApp({super.key});
 
-  // Define the Light and Dark themes
   final ThemeData lightTheme = ThemeData(
     brightness: Brightness.light,
-    primaryColor: Colors.orange, // Change as per your design
+    primaryColor: Colors.orange,
     scaffoldBackgroundColor: Colors.white,
-    appBarTheme: AppBarTheme(backgroundColor: Colors.orange),
-    textTheme: TextTheme(
-      bodyLarge: TextStyle(color: Colors.black), // Updated to 'bodyLarge'
-      bodyMedium: TextStyle(color: Colors.black), // Updated to 'bodyMedium'
-      bodySmall: TextStyle(color: Colors.black), // Updated to 'bodySmall'
+    appBarTheme: AppBarTheme(
+      backgroundColor: Colors.white, // ✅ Light theme AppBar
+      iconTheme: IconThemeData(color: Colors.black),
+      titleTextStyle: TextStyle(
+          color: Colors.black, fontSize: 20, fontWeight: FontWeight.bold),
     ),
-    buttonTheme: ButtonThemeData(
-        buttonColor: Colors.orange), // Example for button styling
+    textTheme: TextTheme(
+      bodyLarge: TextStyle(color: Colors.black),
+      bodyMedium: TextStyle(color: Colors.black),
+      bodySmall: TextStyle(color: Colors.black),
+    ),
     colorScheme: ColorScheme.light(
-      primary: Colors.orange, // Primary color
-      secondary: Colors.orangeAccent, // Secondary color
-      onPrimary: Colors.white, // Text color on primary
-      onSecondary:
-          const Color.fromARGB(255, 34, 12, 41), // Text color on secondary
+      primary: Colors.orange,
+      secondary: Colors.orangeAccent,
+      onPrimary: Colors.white,
+      onSecondary: Colors.black,
+      surface: Colors.white,
+      background: Colors.white,
     ),
   );
 
   final ThemeData darkTheme = ThemeData(
     brightness: Brightness.dark,
-    primaryColor: Colors.deepOrange, // Dark theme primary color
-    scaffoldBackgroundColor: const Color.fromARGB(255, 34, 12, 41),
-    appBarTheme: AppBarTheme(backgroundColor: Colors.black),
-    textTheme: TextTheme(
-      bodyLarge: TextStyle(color: Colors.white), // Updated to 'bodyLarge'
-      bodyMedium: TextStyle(color: Colors.white), // Updated to 'bodyMedium'
-      bodySmall: TextStyle(color: Colors.white), // Updated to 'bodySmall'
+    primaryColor: Colors.deepOrange,
+    scaffoldBackgroundColor: Colors.black,
+    appBarTheme: AppBarTheme(
+      backgroundColor: Colors.black, // ✅ Dark theme AppBar
+      iconTheme: IconThemeData(color: Colors.white),
+      titleTextStyle: TextStyle(
+          color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
     ),
-    buttonTheme: ButtonThemeData(buttonColor: Colors.deepOrange),
+    textTheme: TextTheme(
+      bodyLarge: TextStyle(color: Colors.white),
+      bodyMedium: TextStyle(color: Colors.white),
+      bodySmall: TextStyle(color: Colors.white),
+    ),
     colorScheme: ColorScheme.dark(
-      primary: Colors.deepOrange, // Primary color
-      secondary: Colors.deepOrangeAccent, // Secondary color
-      onPrimary: const Color.fromARGB(255, 34, 12, 41), // Text color on primary
-      onSecondary: Colors.white, // Text color on secondary
+      primary: Colors.deepOrange,
+      secondary: Colors.deepOrangeAccent,
+      onPrimary: Colors.black,
+      onSecondary: Colors.white,
+      surface: Colors.grey[900]!,
+      background: Colors.black,
     ),
   );
 
@@ -58,9 +66,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: lightTheme, // Apply light theme
-      darkTheme: darkTheme, // Apply dark theme
-      themeMode: ThemeMode.system, // Automatically follow system theme
+      theme: lightTheme,
+      darkTheme: darkTheme,
+      themeMode: ThemeMode.system, // Follow system theme
       home: SplashScreen(),
     );
   }

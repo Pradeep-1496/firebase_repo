@@ -53,7 +53,7 @@ class First extends StatelessWidget {
       darkTheme: ThemeData(
         brightness: Brightness.dark,
         primaryColor: Colors.deepOrange,
-        scaffoldBackgroundColor: const Color.fromARGB(255, 34, 12, 41),
+        scaffoldBackgroundColor: const Color.fromARGB(255, 0, 0, 0),
         appBarTheme: AppBarTheme(
           backgroundColor: Colors.deepOrange,
           elevation: 0,
